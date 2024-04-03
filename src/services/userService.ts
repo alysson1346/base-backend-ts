@@ -7,27 +7,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export class UserService{
-  async listUsers(/* {authorization}:any */){
+  async listUsers(){
     const userRepository = AppDataSource.getRepository(User)
     const users:iUser[] = await userRepository.find()
-    
-    // if(!authorization){
-    //   throw new Error("Token not provided")
-    // }
-    
-    // const token = authorization.split(" ")[1]
-    
-  //   const account = jwt.verify(token, String(process.env.JWT_SECRET), (err, decoded) => {
-  //     if (!decoded) {
-  //         throw new Error("Invalid token")
-  //     }
-
-  //     const user = users.find(user => user.email === (<any>decoded).email)
-
-  //     return user
-
-  // })
-    
     return users
   }
   
