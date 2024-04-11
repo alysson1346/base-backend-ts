@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import { iLogin, iUserCreate } from "../interfaces/userInterface";
+import { handleError } from "../errors/AppError";
 
 export class UserController{
   async index(req:Request, res:Response){
@@ -12,12 +13,9 @@ export class UserController{
       
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).send({
-          error: error.name,
-          message: error.message,
-        });
-      }       
-    }
+       handleError(400, error.message, res);
+     }
+   } 
     
   }
   
@@ -29,12 +27,9 @@ export class UserController{
       
       return res.status(201).send({data:newUser})
       
-    } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).send({
-          error: err.name,
-          message: err.message,
-        });
+    } catch (error) {
+       if (error instanceof Error) {
+        handleError(400, error.message, res);
       }
     }   
   }
@@ -48,10 +43,7 @@ export class UserController{
       return res.status(201).send({data:login})
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).send({
-          error: error.name,
-          message: error.message,
-        });
+        handleError(400, error.message, res);
       }
       
     }

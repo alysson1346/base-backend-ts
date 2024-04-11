@@ -1,5 +1,3 @@
-// src/services/user/userCreate.service.ts
-
 import { iUser, iUserCreate, iLogin } from "../interfaces/userInterface";
 import { AppDataSource } from "../data-source";
 import { User } from "../models/userModel";
@@ -15,6 +13,10 @@ export class UserService{
   
   async createUser(data:iUserCreate){
     const userRepository = AppDataSource.getRepository(User)    
+    const alreadyExist = await userRepository.findOneBy({email:data.email})
+    if(alreadyExist?.id){
+      throw new Error("Email já cadastrado")      
+    }
     const user = userRepository.create({
       ...data,
       password:bcrypt.hashSync(data.password,10),
