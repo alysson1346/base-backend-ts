@@ -1,18 +1,18 @@
 import { iUser, iUserCreate, iLogin } from "../interfaces/userInterface";
 import { AppDataSource } from "../data-source";
-import { User } from "../models/userModel";
+import { Usuarios } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export class UserService{
   async listUsers(){
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepository = AppDataSource.getRepository(Usuarios)
     const users:iUser[] = await userRepository.find()
     return users
   }
   
   async createUser(data:iUserCreate){
-    const userRepository = AppDataSource.getRepository(User)    
+    const userRepository = AppDataSource.getRepository(Usuarios)    
     const alreadyExist = await userRepository.findOneBy({email:data.email})
     if(alreadyExist?.id){
       throw new Error("Email já cadastrado")      
@@ -28,7 +28,7 @@ export class UserService{
   }
   
   async login(data:iLogin){
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepository = AppDataSource.getRepository(Usuarios)
 
     const users = await userRepository.find()
 
