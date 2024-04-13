@@ -12,7 +12,7 @@ export interface iUserCreate{
   email:string
   password:string
   is_admin:boolean
-  created_at:Date
+  created_at?:Date
 }
 
 export interface iLogin{

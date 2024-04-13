@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import jwt from "jsonwebtoken"
 import { handleError } from "../errors/AppError";
 
-export const authEmplooye = (req: Request, res: Response, next: NextFunction) => {
+export const authRequired = (req: Request, res: Response, next: NextFunction) => {
 
         const token: any = req.headers.authorization;
         if(!token){handleError(401,"Necessário Token", res);}
