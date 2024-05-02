@@ -4,8 +4,15 @@ import { iLogin, iUserCreate } from "../interfaces/userInterface";
 import { handleError } from "../errors/AppError";
 
 export class UserController{
+  
+
   async index(req:Request, res:Response){
+     /* #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to sign in a specific user' */
+
     try {
+       /* #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to sign in a specific user' */
       const userService = new UserService()
       const users = await userService.listUsers()
       
@@ -19,8 +26,11 @@ export class UserController{
     
   }
   
+
   async store(req:Request, res:Response){
     try {
+       /* #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to sign in a specific user' */
       const data:iUserCreate = req.body
       const userService = new UserService()
       const newUser = await userService.createUser(data)
@@ -36,6 +46,8 @@ export class UserController{
   
   async login(req:Request, res:Response){
     try {
+       /* #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to sign in a specific user' */
       const data:iLogin = req.body
       const userService = new UserService() 
       const login = await userService.login(data)     

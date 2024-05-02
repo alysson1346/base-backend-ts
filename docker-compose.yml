@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  api_back:
+    container_name: api_back
+    build: .
+    env_file: .env
+    ports:
+      - $BACK_PORT:$BACK_PORT
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      docker_db:
+        condition: service_healthy
+    command: sh -c "yarn typeorm migration:run -d src/data-source.ts && yarn dev"
+
+  docker_db:
+    container_name: postgres_db_back
+    image: postgres:14-alpine
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PWD
+    ports:
+      - $DB_PORT:$DB_PORT
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready --username=$POSTGRES_USER --dbname=$POSTGRES_DB",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s

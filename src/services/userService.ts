@@ -12,6 +12,8 @@ export class UserService{
   }
   
   async createUser(data:iUserCreate){
+     /* #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to sign in a specific user' */
     const userRepository = AppDataSource.getRepository(Usuarios)    
     const alreadyExist = await userRepository.findOneBy({email:data.email})
     if(alreadyExist?.id){
