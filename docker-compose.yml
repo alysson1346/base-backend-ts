@@ -13,7 +13,8 @@ services:
     depends_on:
       docker_db:
         condition: service_healthy
-    command: sh -c "yarn typeorm migration:run -d src/data-source.ts && yarn dev"
+    command: sh -c "yarn && yarn typeorm migration:run -d src/data-source.ts && yarn dev"
+    restart: always
 
   docker_db:
     container_name: postgres_db_back

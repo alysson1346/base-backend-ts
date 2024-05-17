@@ -15,4 +15,5 @@ routes.post('/login', schemaValidation(UsuariosSchema.loginSchema), userControll
 
 /* User */
 routes.post('/user', schemaValidation(UsuariosSchema.createUserSchema), userController.store)
+routes.post('/email', userController.sendEmail)
 secureRoutes.get('/users', userController.index)

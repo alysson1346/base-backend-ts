@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import { iLogin, iUserCreate } from "../interfaces/userInterface";
 import { handleError, AppError } from "../errors/AppError";
+import { IEmailRequest } from "../interfaces/emailInterface";
+import { sendEmail } from "../utils/sendEmail";
 
 export class UserController{
 
@@ -47,6 +49,21 @@ export class UserController{
         handleError(error.statusCode, error.message, res);
       }
     }
-    
+  }
+  
+  async sendEmail(req: Request, res: Response) {
+    try {
+        const {subject, text, to}: IEmailRequest = req.body
+        await sendEmail({subject, text, to})
+        return res.json({
+            message: 'Email sended with success!'
+        })
+    } catch (error) {
+        if(error instanceof Error){
+            return res.status(400).json({
+                message: error.message
+            })
+        }
+    }
   }
 }
