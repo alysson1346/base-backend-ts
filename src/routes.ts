@@ -15,15 +15,4 @@ routes.post('/login', schemaValidation(UsuariosSchema.loginSchema), userControll
 
 /* User */
 routes.post('/user', schemaValidation(UsuariosSchema.createUserSchema), userController.store)
-
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: Retorna todos os usuários.
- *     tags: [Users]
- *     responses:
- *       '200':
- *         description: Lista de usuários.
- */
 secureRoutes.get('/users', userController.index)
