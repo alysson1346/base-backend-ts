@@ -4,7 +4,9 @@ import { iLogin, iUserCreate } from "../interfaces/userInterface";
 import { handleError, AppError } from "../errors/AppError";
 import { IEmailRequest } from "../interfaces/emailInterface";
 import { sendEmail } from "../utils/sendEmail";
-
+import { v2 as cloudinary } from 'cloudinary';
+import fs from "fs";
+import "dotenv/config";
 export class UserController{
 
   async index(req:Request, res:Response){
@@ -66,4 +68,40 @@ export class UserController{
         }
     }
   }
+  async sendImage(req: Request, res: Response) {
+      try {
+          if (!req.file) {
+              return res.status(400).json({
+                  message: "Nenhuma imagem enviada"
+              });
+          }
+
+          cloudinary.config({ 
+              cloud_name: process.env.CLOUD_NAME, 
+              api_key: process.env.CLOUD_API_KEY, 
+              api_secret: process.env.CLOUD_API_SECRET
+          });
+
+          const folder = "perfis";
+
+          const uploadOptions = { 
+              folder: folder 
+          };
+
+          const upload = await cloudinary.uploader.upload(req.file!.path, uploadOptions);
+
+          fs.unlink(req.file!.path, (error) => {
+              if (error) {
+                  console.log(error);
+              }
+          });
+
+          return res.json(upload);
+      } catch (error) {
+          return res.status(500).json({
+              message: "Erro ao enviar imagem"
+          });
+      }
+  }
+
 }
