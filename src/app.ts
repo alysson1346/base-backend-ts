@@ -1,5 +1,5 @@
 import express from 'express'
-import { routes, secureRoutes } from './routes'
+import { routes, secureRoutes } from "./routes/userRoute";
 
 export const app = express()
 app.use(express.json())
