@@ -6,20 +6,26 @@ export class Usuarios {
   @PrimaryColumn("uuid")
   readonly id: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
+  // @Column({ default: false })
+  // email_is_verify: boolean;
+
+  @Column({ default: false })
   is_admin: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   created_at: Date;
+
+  // @Column({ nullable: true })
+  // updated_at: Date;
 
   constructor() {
     if (!this.id) {

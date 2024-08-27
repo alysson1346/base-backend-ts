@@ -1,16 +1,25 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/userService";
-import { iLogin, iUserCreate } from "../interfaces/userInterface";
+import { iUserCreate } from "../interfaces/userInterface";
 import { handleControllerError } from "../errors/AppError";
 import { IEmailRequest } from "../interfaces/emailInterface";
 import { sendEmail } from "../utils/sendEmail";
 import { uploadImage, uploadImages } from "../utils/sendImage";
 import { templateHtmlRegisterUser } from "../utils/templateEmails";
 export class UserController {
+  private userService = new UserService();
+  
+  constructor() {
+    this.index = this.index.bind(this);
+    this.store = this.store.bind(this);
+    this.sendEmail = this.sendEmail.bind(this);
+    this.sendImage = this.sendImage.bind(this);
+    this.sendImages = this.sendImages.bind(this);
+  }
+
   async index(req: Request, res: Response) {
     try {
-      const userService = new UserService();
-      const users = await userService.listUsers();
+      const users = await this.userService.listUsers();
 
       return res.status(200).send({ data: users });
     } catch (error) {
@@ -21,22 +30,9 @@ export class UserController {
   async store(req: Request, res: Response) {
     try {
       const data: iUserCreate = req.body;
-      const userService = new UserService();
-      const newUser = await userService.createUser(data);
+      const newUser = await this.userService.createUser(data);
 
       return res.status(201).send({ data: newUser });
-    } catch (error) {
-      handleControllerError(error, res);
-    }
-  }
-
-  async login(req: Request, res: Response) {
-    try {
-      const data: iLogin = req.body;
-      const userService = new UserService();
-      const login = await userService.login(data);
-
-      return res.status(201).send({ data: login });
     } catch (error) {
       handleControllerError(error, res);
     }

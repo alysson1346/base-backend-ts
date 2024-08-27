@@ -4,17 +4,16 @@ import { handleError } from "../errors/AppError";
 
 export const authRequired = (req: Request, res: Response, next: NextFunction) => {
 
-        const token: any = req.headers.authorization;
-        if(!token){handleError(401,"Necessário Token", res);}
-        const tokenSplit = token.split(" ")[1];
+    const token: any = req.headers.authorization;
+    if (!token) { handleError(401, "Necessário Token", res); }
+    const tokenSplit = token.split(" ")[1];
 
-        jwt.verify(tokenSplit as string, String(process.env.JWT_SECRET), (err: any, decoded: any) => {
-                if (err) {
-                    console.error(err);
-                    handleError(401, "Token Inválido", res);
-                } else {
-                    next();
-                }
-        });
- 
+    jwt.verify(tokenSplit as string, String(process.env.JWT_SECRET), (err: any, decoded: any) => {
+        if (err) {
+            handleError(401, "Token Inválido", res);
+        } else {
+            next();
+        }
+    });
+
 }

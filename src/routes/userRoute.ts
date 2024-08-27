@@ -7,24 +7,18 @@ import { upload } from "../middlewares/uploadImage.middlewares";
 
 const userController = new UserController();
 
-export const routes = express.Router();
-export const secureRoutes = express.Router();
-secureRoutes.use(authRequired);
+export const UserRoutes = express.Router();
+export const UserSecureRoutes = express.Router();
+UserSecureRoutes.use(authRequired);
 
-/* Login */
-routes.post(
-  "/login",
-  schemaValidation(UsuariosSchema.loginSchema),
-  userController.login
-);
 
 /* User */
-routes.post(
+UserRoutes.post(
   "/user",
   schemaValidation(UsuariosSchema.createUserSchema),
   userController.store
 );
-secureRoutes.get("/users", userController.index);
-routes.post("/email", userController.sendEmail);
-routes.post("/upload", upload.single("image"), userController.sendImage);
-routes.post("/uploads", upload.array("images", 10), userController.sendImages);
+UserSecureRoutes.get("/users", userController.index);
+UserRoutes.post("/email", userController.sendEmail);
+UserRoutes.post("/upload", upload.single("image"), userController.sendImage);
+UserRoutes.post("/uploads", upload.array("images", 10), userController.sendImages);

@@ -1,7 +1,13 @@
 import express from 'express'
-import { routes, secureRoutes } from "./routes/userRoute";
+import cors from 'cors';
+import { LoginRoutes } from './routes/loginRoutes';
+import { UserRoutes, UserSecureRoutes } from './routes/userRoute';
 
 export const app = express()
+
 app.use(express.json())
-app.use('/api', routes)
-app.use('/api', secureRoutes)
+app.use(cors());
+app.use('/api', LoginRoutes);
+app.use('/api', UserRoutes); 
+app.use('/api', UserSecureRoutes); 
+
